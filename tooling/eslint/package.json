@@ -4,6 +4,7 @@
   "type": "module",
   "exports": {
     "./base": "./base.ts",
+    "./nestjs": "./nestjs.ts",
     "./nextjs": "./nextjs.ts",
     "./react": "./react.ts"
   },
@@ -21,7 +22,9 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-turbo": "^2.5.8",
+    "globals": "^15.15.0",
     "typescript-eslint": "^8.46.2"
   },
   "devDependencies": {
