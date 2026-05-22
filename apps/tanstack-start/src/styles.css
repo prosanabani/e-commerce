@@ -1,26 +1,13 @@
-@import "tailwindcss";
-@import "@repo/tailwind-config/theme";
+@import "@repo/ui/main";
+
+@import "@repo/tailwind-config/sources";
 
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
 @import "@fontsource-variable/noto-sans-arabic";
 
-@source "../../../packages/ui/src/*.{ts,tsx}";
-
-@custom-variant dark (&:where(.dark, .dark *));
-@custom-variant light (&:where(.light, .light *));
-@custom-variant auto (&:where(.auto, .auto *));
-
-@utility container {
-  margin-inline: auto;
-  padding-inline: 2rem;
-  @media (width >= --theme(--breakpoint-sm)) {
-    max-width: none;
-  }
-  @media (width >= 1400px) {
-    max-width: 1400px;
-  }
-}
+/* Scan this app's TS/TSX for class names */
+@source "./**/*.{ts,tsx}";
 
 @layer base {
   :root {
@@ -29,11 +16,5 @@
   }
   html[dir="rtl"] {
     --font-geist-sans: "Noto Sans Arabic Variable", "Geist Variable", sans-serif;
-  }
-  * {
-    @apply border-border;
-  }
-  body {
-    letter-spacing: var(--tracking-normal);
   }
 }

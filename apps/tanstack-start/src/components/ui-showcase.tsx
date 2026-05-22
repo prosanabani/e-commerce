@@ -220,7 +220,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@repo/ui/sidebar";
@@ -298,16 +297,24 @@ function useSampleText() {
 function Section({
   title,
   children,
+  layout = "grid",
 }: {
   title: string;
   children: React.ReactNode;
+  layout?: "grid" | "block";
 }) {
   return (
     <section className="space-y-4">
       <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
-      <div className="bg-card flex flex-wrap items-start gap-4 rounded-xl border p-6">
-        {children}
-      </div>
+      {layout === "block" ? (
+        <div className="bg-card overflow-hidden rounded-xl border">
+          {children}
+        </div>
+      ) : (
+        <div className="bg-card flex flex-wrap items-start gap-4 rounded-xl border p-6">
+          {children}
+        </div>
+      )}
     </section>
   );
 }
@@ -347,6 +354,7 @@ export function UiShowcase() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   const [progress, setProgress] = React.useState(45);
   const [collapsibleOpen, setCollapsibleOpen] = React.useState(false);
+  const [sidebarOpen, setSidebarOpen] = React.useState(true);
 
   const formSchema = z.object({
     email: z.string().email(),
@@ -357,7 +365,10 @@ export function UiShowcase() {
   });
 
   return (
-    <main className="container space-y-12 py-12 pb-32">
+    <main
+      dir={chartDir}
+      className="container space-y-12 py-12 pb-32"
+    >
       <header className="space-y-2">
         <h1 className="text-3xl font-bold tracking-tight">{t.title}</h1>
         <p className="text-muted-foreground max-w-2xl">{t.subtitle}</p>
@@ -431,7 +442,7 @@ export function UiShowcase() {
       </Section>
 
       <Section title="Breadcrumb">
-        <Breadcrumb dir={chartDir}>
+        <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink href={localizeHref("/")}>
@@ -491,7 +502,7 @@ export function UiShowcase() {
       <Section title="Carousel">
         <Carousel
           className="mx-auto w-full max-w-xs"
-          dir={t.isRtl ? "rtl" : "ltr"}
+          opts={{ direction: chartDir }}
         >
           <CarouselContent>
             {[1, 2, 3].map((n) => (
@@ -587,21 +598,26 @@ export function UiShowcase() {
       </Section>
 
       <Section title="Combobox">
-        <Combobox items={t.fruits}>
-          <ComboboxInput
-            placeholder={t.isRtl ? "اختر فاكهة" : "Select fruit"}
-          />
-          <ComboboxContent>
-            <ComboboxEmpty>{t.isRtl ? "لا نتائج" : "No results"}</ComboboxEmpty>
-            <ComboboxList>
-              {(item: string) => (
-                <ComboboxItem key={item} value={item}>
-                  {item}
-                </ComboboxItem>
-              )}
-            </ComboboxList>
-          </ComboboxContent>
-        </Combobox>
+        <div className="w-full max-w-xs">
+          <Combobox items={t.fruits}>
+            <ComboboxInput
+              placeholder={t.isRtl ? "اختر فاكهة" : "Select fruit"}
+              className="w-full"
+            />
+            <ComboboxContent>
+              <ComboboxEmpty>
+                {t.isRtl ? "لا نتائج" : "No results"}
+              </ComboboxEmpty>
+              <ComboboxList>
+                {(item: string) => (
+                  <ComboboxItem key={item} value={item}>
+                    {item}
+                  </ComboboxItem>
+                )}
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
+        </div>
       </Section>
 
       <Section title="Command">
@@ -651,8 +667,8 @@ export function UiShowcase() {
               <DrawerDescription>{t.description}</DrawerDescription>
             </DrawerHeader>
             <DrawerFooter>
-              <DrawerClose asChild>
-                <Button>{t.button}</Button>
+              <DrawerClose>
+                <Button className="w-full">{t.button}</Button>
               </DrawerClose>
             </DrawerFooter>
           </DrawerContent>
@@ -661,7 +677,7 @@ export function UiShowcase() {
           <SheetTrigger asChild>
             <Button variant="outline">{t.sheet}</Button>
           </SheetTrigger>
-          <SheetContent dir={chartDir} side="right">
+          <SheetContent side={t.isRtl ? "left" : "right"}>
             <SheetHeader>
               <SheetTitle>{t.item1}</SheetTitle>
               <SheetDescription>{t.description}</SheetDescription>
@@ -854,7 +870,7 @@ export function UiShowcase() {
         <Progress value={progress} className="w-[200px]" />
         <Slider
           value={[progress]}
-          onValueChange={([v]) => setProgress(v ?? 0)}
+          onValueChange={(value) => setProgress(value[0] ?? 0)}
           max={100}
           step={1}
           className="w-[200px]"
@@ -898,14 +914,22 @@ export function UiShowcase() {
         <Skeleton className="h-10 w-48" />
       </Section>
 
-      <Section title="Sidebar">
+      <Section title="Sidebar" layout="block">
         <SidebarProvider
-          dir={t.isRtl ? "rtl" : "ltr"}
-          className="relative min-h-[280px] w-full overflow-hidden rounded-lg border"
+          open={sidebarOpen}
+          onOpenChange={setSidebarOpen}
+          className="relative flex !min-h-0 h-[280px] w-full overflow-hidden"
         >
           <Sidebar
-            dir={t.isRtl ? "rtl" : "ltr"}
+            collapsible="none"
             side={t.isRtl ? "right" : "left"}
+            className={
+              sidebarOpen
+                ? t.isRtl
+                  ? "shrink-0 border-s border-sidebar-border"
+                  : "shrink-0 border-e border-sidebar-border"
+                : "w-0 min-w-0 shrink-0 overflow-hidden border-0 p-0 opacity-0"
+            }
           >
             <SidebarContent>
               <SidebarGroup>
@@ -931,10 +955,10 @@ export function UiShowcase() {
               </SidebarGroup>
             </SidebarContent>
           </Sidebar>
-          <SidebarInset className="flex flex-row items-center gap-2 p-4">
+          <div className="relative flex min-h-0 min-w-0 flex-1 flex-row items-center gap-2 bg-background p-4">
             <SidebarTrigger />
             <span className="min-w-0 flex-1 text-sm">{t.description}</span>
-          </SidebarInset>
+          </div>
         </SidebarProvider>
       </Section>
 
@@ -969,7 +993,7 @@ export function UiShowcase() {
         <Button
           variant="outline"
           onClick={() =>
-            toast(t.isRtl ? "إشعار تجريبي" : "Sample notification")
+            toast.success(t.isRtl ? "إشعار تجريبي" : "Sample notification")
           }
         >
           {t.isRtl ? "عرض إشعار" : "Show toast"}

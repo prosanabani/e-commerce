@@ -4,7 +4,17 @@
     "lib": ["ES2022", "dom", "dom.iterable"],
     "jsx": "preserve",
     "paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+      "@repo/ui": ["../../packages/ui/src/index.ts"],
+      "@repo/ui/src": ["../../packages/ui/src"],
+      "@repo/ui/src/*": ["../../packages/ui/src/*"],
+      "@repo/ui/components": ["../../packages/ui/src/components"],
+      "@repo/ui/components/*": ["../../packages/ui/src/components/*"],
+      "@repo/ui/hooks": ["../../packages/ui/src/hooks"],
+      "@repo/ui/hooks/*": ["../../packages/ui/src/hooks/*"],
+      "@repo/ui/lib": ["../../packages/ui/src/lib"],
+      "@repo/ui/lib/*": ["../../packages/ui/src/lib/*"],
+      "@repo/ui/*": ["../../packages/ui/src/components/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],
