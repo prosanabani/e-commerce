@@ -1,0 +1,13 @@
+/*
+ * Shared @source paths for @repo/ui.
+ * Paths are relative to this file (tooling/tailwind/).
+ *
+ * Required for monorepos: Tailwind skips node_modules, including pnpm workspace
+ * symlinks, so the Vite plugin does not scan @repo/ui unless these are declared.
+ *
+ * Use single-segment globs so nested duplicate folders (e.g. components/components)
+ * are not scanned twice.
+ */
+@source "../../packages/ui/src/components/*.{tsx,ts}";
+@source "../../packages/ui/src/hooks/*.{ts,tsx}";
+@source not "../../packages/ui/src/components/components/**";

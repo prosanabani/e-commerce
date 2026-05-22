@@ -5,6 +5,8 @@
   "type": "module",
   "exports": {
     "./theme": "./theme.css",
+    "./base": "./base.css",
+    "./sources": "./sources.css",
     "./postcss-config": "./postcss-config.js"
   },
   "scripts": {

@@ -1,0 +1,6 @@
+/* Stub for shadcn CLI; app styles live in @repo/tailwind-config */
+@import "@repo/tailwind-config/theme";
+@import "@repo/tailwind-config/base";
+@import "shadcn/tailwind.css";
+
+
