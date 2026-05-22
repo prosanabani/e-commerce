@@ -1,9 +1,7 @@
 {
-
   "extends": "@repo/tsconfig/base.json",
 
   "compilerOptions": {
-
     "lib": ["ES2022", "dom", "dom.iterable"],
 
     "jsx": "preserve",
@@ -13,7 +11,6 @@
     "baseUrl": ".",
 
     "paths": {
-
       "@repo/ui": ["./src/index.ts"],
 
       "@repo/ui/src": ["./src"],
@@ -31,14 +28,10 @@
       "@repo/ui/lib": ["./src/lib"],
 
       "@repo/ui/lib/*": ["./src/lib/*"]
-
     }
-
   },
 
   "include": ["src"],
 
   "exclude": ["node_modules"]
-
 }
-
