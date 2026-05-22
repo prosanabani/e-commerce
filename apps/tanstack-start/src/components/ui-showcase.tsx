@@ -291,7 +291,19 @@ function useSampleText() {
     components: isRtl ? "المكونات" : "Components",
     breadcrumbCurrent: isRtl ? "مسار التنقل" : "Breadcrumb",
     sheet: isRtl ? "لوحة جانبية" : "Sheet",
+    progressLabel: isRtl ? "تقدم الرفع" : "Upload progress",
   };
+}
+
+function formatProgressPercent(value: number, isRtl: boolean): string {
+  if (!isRtl) return `${value}%`;
+  const arabicNumerals = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
+  const digits = value
+    .toString()
+    .split("")
+    .map((d) => arabicNumerals[Number.parseInt(d, 10)] ?? d)
+    .join("");
+  return `${digits}٪`;
 }
 
 function Section({
@@ -867,13 +879,28 @@ export function UiShowcase() {
       </Section>
 
       <Section title="Progress & Slider & Spinner">
-        <Progress value={progress} className="w-[200px]" />
+        <Field
+          className="w-full max-w-sm"
+          dir={t.isRtl ? "rtl" : "ltr"}
+        >
+          <FieldLabel htmlFor="progress-upload" className="w-full">
+            <span>{t.progressLabel}</span>
+            <span className="ms-auto">
+              {formatProgressPercent(progress, t.isRtl)}
+            </span>
+          </FieldLabel>
+          <Progress
+            id="progress-upload"
+            value={progress}
+            className="w-full"
+          />
+        </Field>
         <Slider
           value={[progress]}
           onValueChange={(value) => setProgress(value[0] ?? 0)}
           max={100}
           step={1}
-          className="w-[200px]"
+          className="w-full max-w-sm"
         />
         <Spinner />
       </Section>

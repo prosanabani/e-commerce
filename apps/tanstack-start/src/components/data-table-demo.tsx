@@ -1,24 +1,18 @@
 "use client";
 
+import type { ColumnDef } from "@tanstack/react-table";
+import { DollarSign, Mail, Text } from "lucide-react";
 import * as React from "react";
-import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
 
 import { Badge } from "@repo/ui/badge";
-import { Button } from "@repo/ui/button";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@repo/ui/table";
+  DataTable,
+  DataTableAdvancedToolbar,
+  DataTableColumnHeader,
+  DataTableFilterList,
+  DataTableSortList,
+  useDataTable,
+} from "@repo/ui/data-table";
 
 type Payment = {
   id: string;
@@ -58,6 +52,24 @@ const payments: Payment[] = [
     status: "failed",
     email: "carmella@example.com",
   },
+  {
+    id: "489e1d46",
+    amount: 150,
+    status: "pending",
+    email: "olivia@example.com",
+  },
+  {
+    id: "489e1d47",
+    amount: 420,
+    status: "processing",
+    email: "jackson@example.com",
+  },
+  {
+    id: "489e1d48",
+    amount: 990,
+    status: "success",
+    email: "mia@example.com",
+  },
 ];
 
 function statusLabel(
@@ -80,111 +92,116 @@ export function DataTableDemo({ isRtl }: { isRtl: boolean }) {
   const columns = React.useMemo<ColumnDef<Payment>[]>(
     () => [
       {
+        id: "status",
         accessorKey: "status",
-        header: isRtl ? "الحالة" : "Status",
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            label={isRtl ? "الحالة" : "Status"}
+          />
+        ),
         cell: ({ row }) => (
           <Badge variant="outline">
             {statusLabel(row.original.status, isRtl)}
           </Badge>
         ),
+        meta: {
+          label: isRtl ? "الحالة" : "Status",
+          variant: "select",
+          options: [
+            { label: isRtl ? "ناجح" : "Success", value: "success" },
+            { label: isRtl ? "قيد المعالجة" : "Processing", value: "processing" },
+            { label: isRtl ? "قيد الانتظار" : "Pending", value: "pending" },
+            { label: isRtl ? "فشل" : "Failed", value: "failed" },
+          ],
+        },
+        enableColumnFilter: true,
+        enableSorting: true,
       },
       {
+        id: "email",
         accessorKey: "email",
-        header: isRtl ? "البريد الإلكتروني" : "Email",
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            label={isRtl ? "البريد الإلكتروني" : "Email"}
+          />
+        ),
+        cell: ({ row }) => <div>{row.getValue("email")}</div>,
+        meta: {
+          label: isRtl ? "البريد" : "Email",
+          placeholder: isRtl ? "ابحث في البريد..." : "Search emails...",
+          variant: "text",
+          icon: Mail,
+        },
+        enableColumnFilter: true,
+        enableSorting: true,
       },
       {
+        id: "amount",
         accessorKey: "amount",
-        header: isRtl ? "المبلغ" : "Amount",
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            label={isRtl ? "المبلغ" : "Amount"}
+          />
+        ),
         cell: ({ row }) =>
           new Intl.NumberFormat(isRtl ? "ar-SA" : "en-US", {
             style: "currency",
             currency: "USD",
           }).format(row.original.amount),
+        meta: {
+          label: isRtl ? "المبلغ" : "Amount",
+          variant: "number",
+          unit: "$",
+          icon: DollarSign,
+        },
+        enableColumnFilter: true,
+        enableSorting: true,
+      },
+      {
+        id: "id",
+        accessorKey: "id",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} label="ID" />
+        ),
+        meta: {
+          label: "ID",
+          placeholder: "Search IDs...",
+          variant: "text",
+          icon: Text,
+        },
+        enableColumnFilter: true,
+        enableHiding: true,
       },
     ],
     [isRtl],
   );
 
-  const table = useReactTable({
+  const pageCount = Math.ceil(payments.length / 3);
+
+  const { table } = useDataTable({
     data: payments,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    initialState: { pagination: { pageSize: 3 } },
+    pageCount,
+    mode: "client",
+    enableAdvancedFilter: true,
+    getRowId: (row) => row.id,
+    initialState: {
+      sorting: [{ id: "amount", desc: true }],
+      pagination: { pageIndex: 0, pageSize: 3 },
+    },
   });
 
   return (
-    <div dir={isRtl ? "rtl" : "ltr"} className="w-full max-w-2xl space-y-4">
-      <div className="overflow-hidden rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  {isRtl ? "لا توجد نتائج." : "No results."}
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <p className="text-muted-foreground text-sm">
-          {isRtl
-            ? `صف ${table.getState().pagination.pageIndex + 1} من ${table.getPageCount()}`
-            : `Page ${table.getState().pagination.pageIndex + 1} of ${table.getPageCount()}`}
-        </p>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            {isRtl ? "السابق" : "Previous"}
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            {isRtl ? "التالي" : "Next"}
-          </Button>
-        </div>
-      </div>
+    <div dir={isRtl ? "rtl" : "ltr"} className="w-full max-w-4xl">
+      <DataTable table={table}>
+        <DataTableAdvancedToolbar table={table}>
+          <DataTableFilterList table={table} />
+          <DataTableSortList table={table} />
+        </DataTableAdvancedToolbar>
+      </DataTable>
     </div>
   );
 }
