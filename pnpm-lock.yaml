@@ -81,6 +81,8 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
+  apps/bagisto: {}
+
   apps/tanstack-start:
     dependencies:
       '@fontsource-variable/geist':

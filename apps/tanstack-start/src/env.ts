@@ -10,8 +10,13 @@ export const env = createEnv({
       .enum(["development", "production", "test"])
       .default("development"),
   },
-  server: {},
-  client: {},
+  server: {
+    BAGISTO_ENDPOINT: z.url().optional(),
+  },
+  client: {
+    VITE_BAGISTO_ENDPOINT: z.url().optional(),
+    VITE_BAGISTO_STOREFRONT_KEY: z.string().optional(),
+  },
   runtimeEnv: process.env,
   skipValidation:
     !!process.env.CI || process.env.npm_lifecycle_event === "lint",

@@ -5,6 +5,8 @@
     "build": "turbo run build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo run clean",
+    "bagisto:bootstrap": "pnpm --filter @repo/bagisto bootstrap",
+    "bagisto:postbootstrap": "pnpm --filter @repo/bagisto postbootstrap",
     "predev": "turbo daemon start",
     "dev": "turbo watch dev --continue",
     "format": "turbo run format --continue -- --cache --cache-location .cache/.prettiercache",

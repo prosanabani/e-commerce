@@ -1,0 +1,17 @@
+{
+  "name": "@repo/bagisto",
+  "private": true,
+  "scripts": {
+    "bootstrap": "node ./scripts/setup.mjs",
+    "postbootstrap": "node ./scripts/post-setup.mjs",
+    "dev": "node ./scripts/dev.mjs",
+    "dev:sail": "docker compose up",
+    "dev:down": "docker compose down",
+    "install:api": "composer require bagisto/bagisto-api --no-interaction && php artisan bagisto-api-platform:install --no-interaction",
+    "generate:storefront-key": "php artisan bagisto-api:generate-key --name=\"TanStack Storefront\" --rate-limit=null",
+    "lint": "echo \"Bagisto uses Laravel Pint — run: composer pint\"",
+    "typecheck": "echo \"Bagisto is a PHP app — no TypeScript typecheck\"",
+    "format": "echo \"Bagisto uses Laravel Pint — run: composer pint\"",
+    "build": "echo \"Bagisto backend has no Node build step\""
+  }
+}

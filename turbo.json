@@ -51,7 +51,11 @@
     "AUTH_DISCORD_SECRET",
     "AUTH_REDIRECT_PROXY_URL",
     "AUTH_SECRET",
-    "PORT"
+    "PORT",
+    "BAGISTO_PORT",
+    "BAGISTO_ENDPOINT",
+    "VITE_BAGISTO_ENDPOINT",
+    "VITE_BAGISTO_STOREFRONT_KEY"
   ],
   "globalPassThroughEnv": [
     "NODE_ENV",
