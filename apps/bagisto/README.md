@@ -4,11 +4,13 @@
 
 **Full setup:** see [`setup.md`](../../setup.md) at the repo root.
 
+This project uses **MySQL** and the [Bagisto Headless API](https://headless-doc.bagisto.com/) (`bagisto/bagisto-api`).
+
 ## Quick start
 
 ```bash
 # 1. Configure database credentials
-copy scripts\env.postgres.example .env
+copy scripts\env.mysql.example .env
 
 # 2. From repo root — one command does everything
 pnpm bagisto:init
@@ -27,4 +29,4 @@ pnpm --filter @repo/bagisto dev
 | `pnpm bagisto:fresh` | `migrate:fresh` (destructive) |
 | `pnpm --filter @repo/bagisto dev` | http://localhost:8000 |
 
-PostgreSQL env template: `scripts/env.postgres.example`
+MySQL env template: `scripts/env.mysql.example`

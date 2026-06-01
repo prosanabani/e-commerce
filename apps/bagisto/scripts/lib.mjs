@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const appRoot = path.resolve(__dirname, "..");
-export const postgresEnvTemplate = path.join(__dirname, "env.postgres.example");
+export const mysqlEnvTemplate = path.join(__dirname, "env.mysql.example");
 export const envPath = path.join(appRoot, ".env");
 export const artisanPath = path.join(appRoot, "artisan");
 export const installedMarker = path.join(appRoot, "storage", "installed");
@@ -102,8 +102,8 @@ export function ensureEnvFile() {
     return false;
   }
 
-  copyFileSync(postgresEnvTemplate, envPath);
-  console.log("Created apps/bagisto/.env from scripts/env.postgres.example");
+  copyFileSync(mysqlEnvTemplate, envPath);
+  console.log("Created apps/bagisto/.env from scripts/env.mysql.example");
   return true;
 }
 
@@ -122,9 +122,9 @@ export function validateEnv(env) {
     }
   }
 
-  if (env.DB_CONNECTION !== "pgsql") {
+  if (env.DB_CONNECTION !== "mysql") {
     console.warn(
-      "Warning: DB_CONNECTION is not pgsql. This monorepo expects PostgreSQL.",
+      "Warning: DB_CONNECTION is not mysql. This monorepo expects MySQL.",
     );
   }
 

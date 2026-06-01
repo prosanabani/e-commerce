@@ -8,14 +8,14 @@ Minimal flow: configure **one** `.env` file for Bagisto, run **one** init comman
 |------|---------|-------|
 | Node.js | ^22 | For TanStack / pnpm |
 | pnpm | ^10 | `npm i -g pnpm` |
-| PHP | 8.2+ | Extensions: `pdo_pgsql`, `pgsql`, `openssl`, `mbstring`, `tokenizer`, `xml`, `ctype`, `json`, `bcmath`, `fileinfo` |
+| PHP | 8.2+ | Extensions: `pdo_mysql`, `openssl`, `mbstring`, `tokenizer`, `xml`, `ctype`, `json`, `bcmath`, `fileinfo` |
 | Composer | 2.x | PHP dependency manager |
-| PostgreSQL | 14+ | Database for Bagisto |
+| MySQL | 8.0+ | Database for Bagisto (MariaDB 10.3+ also works) |
 
-Verify PHP PostgreSQL support:
+Verify PHP MySQL support:
 
 ```bash
-php -m | findstr pgsql
+php -m | findstr pdo_mysql
 ```
 
 ---
@@ -32,24 +32,24 @@ pnpm install
 
 ## 2. Bagisto — configure `.env`
 
-Copy the PostgreSQL template and edit it:
+Copy the MySQL template and edit it:
 
 ```bash
-copy apps\bagisto\scripts\env.postgres.example apps\bagisto\.env
+copy apps\bagisto\scripts\env.mysql.example apps\bagisto\.env
 ```
 
 Set at least these values in `apps/bagisto/.env`:
 
 ```env
-DB_CONNECTION=pgsql
+DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
-DB_PORT=5432
+DB_PORT=3306
 DB_DATABASE=bagisto
-DB_USERNAME=postgres
+DB_USERNAME=root
 DB_PASSWORD=your-password
 ```
 
-You do **not** need to create the database manually — `pnpm bagisto:init` creates it if missing (PostgreSQL must be running and the user must have `CREATEDB` permission).
+You do **not** need to create the database manually — `pnpm bagisto:init` creates it if missing (MySQL must be running and the user needs `CREATE` permission).
 
 Optional: `APP_NAME`, `APP_LOCALE`, `APP_CURRENCY`, `APP_URL`.
 
@@ -144,11 +144,8 @@ Legacy aliases (still work, but prefer `bagisto:init`):
 
 ## Troubleshooting
 
-**`could not connect to server` (PostgreSQL)**  
-PostgreSQL is not running, or `DB_*` values in `apps/bagisto/.env` are wrong.
-
-**`pdo_pgsql` / `pgsql` not found**  
-Enable the PostgreSQL PHP extension (e.g. uncomment `extension=pdo_pgsql` in `php.ini`).
+**`Connection refused` / `could not find driver` (MySQL)**  
+MySQL is not running, or `DB_*` values in `apps/bagisto/.env` are wrong. Ensure `pdo_mysql` is enabled in `php.ini`.
 
 **Headless API / GraphQL returns 404**  
 Re-run `pnpm bagisto:init` or `pnpm --filter @repo/bagisto install:api`.

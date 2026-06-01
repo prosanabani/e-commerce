@@ -5,7 +5,6 @@ namespace Webkul\Installer\Database\Seeders\Core;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Webkul\Installer\Helpers\DatabaseSeederHelper;
 
 class ConfigTableSeeder extends Seeder
 {
@@ -167,7 +166,5 @@ class ConfigTableSeeder extends Seeder
                 'updated_at' => $now,
             ],
         ]);
-
-        DatabaseSeederHelper::syncPostgresSequence('core_config');
     }
 }

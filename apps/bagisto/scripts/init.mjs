@@ -1,4 +1,5 @@
 import path from "node:path";
+import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import {
   appRoot,
@@ -69,8 +70,13 @@ if (missing.length > 0) {
   );
 }
 
-console.log("\nEnsuring PostgreSQL database exists...");
+console.log("\nEnsuring MySQL database exists...");
 run("php scripts/ensure-database.php");
+
+if (existsSync(path.join(appRoot, "bootstrap", "cache", "config.php"))) {
+  console.log("\nClearing cached config (stale DB settings)...");
+  runSetup("php artisan config:clear --no-interaction");
+}
 
 if (!hasBagistoSource()) {
   console.log("Bagisto source not found — cloning...\n");
