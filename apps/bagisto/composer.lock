@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d5a3a440861ec331098012a26e245f33",
+    "content-hash": "2835caaeee6a646278c04e6f3ef68cf6",
     "packages": [
         {
             "name": "api-platform/documentation",
@@ -1425,16 +1425,16 @@
         },
         {
             "name": "bagisto/bagisto-api",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bagisto/bagisto-api.git",
-                "reference": "67010554c5f1cc4c45014c54626c374cf2a7c214"
+                "reference": "5888974cb8e1ac7410ffa0d9c7ea0d750e0a4b74"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bagisto/bagisto-api/zipball/67010554c5f1cc4c45014c54626c374cf2a7c214",
-                "reference": "67010554c5f1cc4c45014c54626c374cf2a7c214",
+                "url": "https://api.github.com/repos/bagisto/bagisto-api/zipball/5888974cb8e1ac7410ffa0d9c7ea0d750e0a4b74",
+                "reference": "5888974cb8e1ac7410ffa0d9c7ea0d750e0a4b74",
                 "shasum": ""
             },
             "require": {
@@ -1470,9 +1470,9 @@
             "description": "Bagisto API Platform package with GraphQL and REST API support",
             "support": {
                 "issues": "https://github.com/bagisto/bagisto-api/issues",
-                "source": "https://github.com/bagisto/bagisto-api/tree/v1.0.3"
+                "source": "https://github.com/bagisto/bagisto-api/tree/v1.0.4"
             },
-            "time": "2026-04-23T05:46:41+00:00"
+            "time": "2026-05-29T13:39:44+00:00"
         },
         {
             "name": "barryvdh/laravel-dompdf",

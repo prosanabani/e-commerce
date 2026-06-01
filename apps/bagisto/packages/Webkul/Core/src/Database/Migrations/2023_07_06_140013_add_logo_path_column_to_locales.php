@@ -20,7 +20,11 @@ return new class extends Migration
             $table->string('logo_path')->after('direction')->nullable();
         });
 
-        DB::table('locales')->whereNull('logo_path')->update(['logo_path' => DB::raw('CONCAT("locales/", code, ".png")')]);
+        $logoPathExpression = DB::getDriverName() === 'pgsql'
+            ? "'locales/' || code || '.png'"
+            : 'CONCAT("locales/", code, ".png")';
+
+        DB::table('locales')->whereNull('logo_path')->update(['logo_path' => DB::raw($logoPathExpression)]);
     }
 
     /**
