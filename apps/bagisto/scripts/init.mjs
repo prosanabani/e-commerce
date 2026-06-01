@@ -51,7 +51,7 @@ const createdEnv = ensureEnvFile();
 
 if (createdEnv) {
   fail(
-    "Edit apps/bagisto/.env (at least DB_* values), create the PostgreSQL database, then run:\n  pnpm bagisto:init",
+    "Edit apps/bagisto/.env (at least DB_* values), then run:\n  pnpm bagisto:init",
   );
 }
 
@@ -68,6 +68,9 @@ if (missing.length > 0) {
     `Set these in apps/bagisto/.env before continuing: ${missing.join(", ")}`,
   );
 }
+
+console.log("\nEnsuring PostgreSQL database exists...");
+run("php scripts/ensure-database.php");
 
 if (!hasBagistoSource()) {
   console.log("Bagisto source not found — cloning...\n");

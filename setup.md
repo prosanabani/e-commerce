@@ -32,12 +32,6 @@ pnpm install
 
 ## 2. Bagisto — configure `.env`
 
-Create the database first (adjust credentials as needed):
-
-```bash
-psql -U postgres -c "CREATE DATABASE bagisto;"
-```
-
 Copy the PostgreSQL template and edit it:
 
 ```bash
@@ -54,6 +48,8 @@ DB_DATABASE=bagisto
 DB_USERNAME=postgres
 DB_PASSWORD=your-password
 ```
+
+You do **not** need to create the database manually — `pnpm bagisto:init` creates it if missing (PostgreSQL must be running and the user must have `CREATEDB` permission).
 
 Optional: `APP_NAME`, `APP_LOCALE`, `APP_CURRENCY`, `APP_URL`.
 
