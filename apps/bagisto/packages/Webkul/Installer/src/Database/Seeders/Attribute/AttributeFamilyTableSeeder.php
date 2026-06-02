@@ -4,7 +4,6 @@ namespace Webkul\Installer\Database\Seeders\Attribute;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Webkul\Installer\Helpers\DatabaseSeederHelper;
 
 class AttributeFamilyTableSeeder extends Seeder
 {
@@ -16,20 +15,22 @@ class AttributeFamilyTableSeeder extends Seeder
      */
     public function run($parameters = [])
     {
-        DatabaseSeederHelper::withoutForeignKeyChecks(function () use ($parameters) {
-            DB::table('attribute_families')->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-            $defaultLocale = $parameters['default_locale'] ?? config('app.locale');
+        DB::table('attribute_families')->delete();
 
-            DB::table('attribute_families')->insert([
-                [
-                    'id' => 1,
-                    'code' => 'default',
-                    'name' => trans('installer::app.seeders.attribute.attribute-families.default', [], $defaultLocale),
-                    'status' => 0,
-                    'is_user_defined' => 1,
-                ],
-            ]);
-        });
+        $defaultLocale = $parameters['default_locale'] ?? config('app.locale');
+
+        DB::table('attribute_families')->insert([
+            [
+                'id' => 1,
+                'code' => 'default',
+                'name' => trans('installer::app.seeders.attribute.attribute-families.default', [], $defaultLocale),
+                'status' => 0,
+                'is_user_defined' => 1,
+            ],
+        ]);
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

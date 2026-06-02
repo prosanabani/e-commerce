@@ -18,7 +18,6 @@
         "ext-pdo_mysql": "*",
         "ext-tokenizer": "*",
         "astrotomic/laravel-translatable": "^11.16",
-        "bagisto/bagisto-api": "*",
         "barryvdh/laravel-dompdf": "^2.0.0|^3.0",
         "diglactic/laravel-breadcrumbs": "^10.0",
         "elasticsearch/elasticsearch": "^8.10",
@@ -81,6 +80,7 @@
             "Webkul\\DataGrid\\": "packages/Webkul/DataGrid/src",
             "Webkul\\DataTransfer\\": "packages/Webkul/DataTransfer/src",
             "Webkul\\DebugBar\\": "packages/Webkul/DebugBar/src",
+            "Webkul\\EUWithdrawal\\": "packages/Webkul/EUWithdrawal/src",
             "Webkul\\FPC\\": "packages/Webkul/FPC/src",
             "Webkul\\GDPR\\": "packages/Webkul/GDPR/src",
             "Webkul\\ImageCache\\": "packages/Webkul/ImageCache/src",
@@ -106,8 +106,7 @@
             "Webkul\\Stripe\\": "packages/Webkul/Stripe/src",
             "Webkul\\Tax\\": "packages/Webkul/Tax/src",
             "Webkul\\Theme\\": "packages/Webkul/Theme/src",
-            "Webkul\\User\\": "packages/Webkul/User/src",
-            "Webkul\\GraphQL\\": "packages/Webkul/GraphQL/src"
+            "Webkul\\User\\": "packages/Webkul/User/src"
         }
     },
     "autoload-dev": {
@@ -117,6 +116,7 @@
             "Webkul\\Core\\Tests\\": "packages/Webkul/Core/tests",
             "Webkul\\Customer\\Tests\\": "packages/Webkul/Customer/tests",
             "Webkul\\DataGrid\\Tests\\": "packages/Webkul/DataGrid/tests",
+            "Webkul\\EUWithdrawal\\Tests\\": "packages/Webkul/EUWithdrawal/tests",
             "Webkul\\Installer\\Tests\\": "packages/Webkul/Installer/tests",
             "Webkul\\Payment\\Tests\\": "packages/Webkul/Payment/tests",
             "Webkul\\PayU\\Tests\\": "packages/Webkul/PayU/tests",
@@ -139,20 +139,17 @@
         "laravel": {
             "dont-discover": [
                 "intervention/image",
-                "laravel/socialite",
-                "api-platform/laravel"
+                "laravel/socialite"
             ]
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "packages/*/*",
-            "options": {
-                "symlink": true
-            }
+    "repositories": [{
+        "type": "path",
+        "url": "packages/*/*",
+        "options": {
+            "symlink": true
         }
-    ],
+    }],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",

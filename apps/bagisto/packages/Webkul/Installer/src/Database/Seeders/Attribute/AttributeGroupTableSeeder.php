@@ -4,7 +4,6 @@ namespace Webkul\Installer\Database\Seeders\Attribute;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Webkul\Installer\Helpers\DatabaseSeederHelper;
 
 class AttributeGroupTableSeeder extends Seeder
 {
@@ -16,14 +15,15 @@ class AttributeGroupTableSeeder extends Seeder
      */
     public function run($parameters = [])
     {
-        DatabaseSeederHelper::withoutForeignKeyChecks(function () use ($parameters) {
-            DB::table('attribute_groups')->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-            DB::table('attribute_group_mappings')->delete();
+        DB::table('attribute_groups')->delete();
 
-            DB::table('attribute_groups')->delete();
+        DB::table('attribute_group_mappings')->delete();
 
-            $defaultLocale = $parameters['default_locale'] ?? config('app.locale');
+        DB::table('attribute_groups')->delete();
+
+        $defaultLocale = $parameters['default_locale'] ?? config('app.locale');
 
         DB::table('attribute_groups')->insert([
             [
@@ -254,6 +254,7 @@ class AttributeGroupTableSeeder extends Seeder
                 'position' => 2,
             ],
         ]);
-        });
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
     }
 }

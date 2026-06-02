@@ -112,7 +112,7 @@ class DatabaseManager
         } catch (Exception $e) {
             report($e);
 
-            throw $e;
+            return false;
         }
     }
 

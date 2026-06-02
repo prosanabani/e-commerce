@@ -53,7 +53,6 @@ class CategoryTableSeeder extends Seeder
                 [
                     'name' => trans('installer::app.seeders.category.categories.name', [], $locale),
                     'slug' => 'root',
-                    'url_path' => 'root',
                     'description' => trans('installer::app.seeders.category.categories.description', [], $locale),
                     'meta_title' => '',
                     'meta_description' => '',

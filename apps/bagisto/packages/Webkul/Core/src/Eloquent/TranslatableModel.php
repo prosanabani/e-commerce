@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Webkul\Core\Helpers\Locales;
 
-abstract class TranslatableModel extends Model
+class TranslatableModel extends Model
 {
     use Translatable;
 
