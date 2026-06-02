@@ -1,6 +1,6 @@
 # Project setup
 
-Minimal flow: configure **one** `.env` file for Bagisto, run **one** init command, then start the apps.
+Bagisto runs independently under `apps/bagisto` (Composer + PHP). This monorepo only manages the TanStack Start frontend and shared packages.
 
 ## Prerequisites
 
@@ -8,15 +8,9 @@ Minimal flow: configure **one** `.env` file for Bagisto, run **one** init comman
 |------|---------|-------|
 | Node.js | ^22 | For TanStack / pnpm |
 | pnpm | ^10 | `npm i -g pnpm` |
-| PHP | 8.2+ | Extensions: `pdo_mysql`, `openssl`, `mbstring`, `tokenizer`, `xml`, `ctype`, `json`, `bcmath`, `fileinfo` |
-| Composer | 2.x | PHP dependency manager |
-| MySQL | 8.0+ | Database for Bagisto (MariaDB 10.3+ also works) |
-
-Verify PHP MySQL support:
-
-```bash
-php -m | findstr pdo_mysql
-```
+| PHP | 8.2+ | For Bagisto (run separately) |
+| Composer | 2.x | For Bagisto (run separately) |
+| MySQL | 8.0+ | Database for Bagisto |
 
 ---
 
@@ -30,91 +24,51 @@ pnpm install
 
 ---
 
-## 2. Bagisto — configure `.env`
+## 2. Bagisto (manual, outside the monorepo)
 
-Copy the MySQL template and edit it:
+Run all Bagisto commands from `apps/bagisto`:
 
 ```bash
-copy apps\bagisto\scripts\env.mysql.example apps\bagisto\.env
+cd apps/bagisto
+copy .env.example .env
+composer install
+php artisan bagisto:install
+php artisan serve
 ```
 
-Set at least these values in `apps/bagisto/.env`:
+- Storefront: http://localhost:8000
+- Admin: http://localhost:8000/admin
 
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=bagisto
-DB_USERNAME=root
-DB_PASSWORD=your-password
-```
-
-You do **not** need to create the database manually — `pnpm bagisto:init` creates it if missing (MySQL must be running and the user needs `CREATE` permission).
-
-Optional: `APP_NAME`, `APP_LOCALE`, `APP_CURRENCY`, `APP_URL`.
-
-Default admin after init (unless you override in `.env`):
-
-- Email: `admin@example.com`
-- Password: `admin123`
+Configure `DB_*` in `apps/bagisto/.env` before installing. See [Bagisto docs](https://devdocs.bagisto.com/) for full setup.
 
 ---
 
-## 3. Bagisto — one-command init
-
-From the repo root:
-
-```bash
-pnpm bagisto:init
-```
-
-This single command:
-
-1. Clones Bagisto source if missing
-2. Runs `composer install`
-3. Runs `bagisto:install` (migrations, seeders, storage link, admin user)
-4. Installs the headless API (`bagisto-api-platform:install`)
-5. Generates a storefront API key (if one is not already in `.env`)
-
-Re-run safely after the first install — it only applies pending migrations and API setup.  
-Use `pnpm bagisto:init -- --force` for a full reinstall (wipes the database).
-
----
-
-## 4. TanStack — root `.env`
+## 3. TanStack Start — root `.env`
 
 ```bash
 copy .env.example .env
 ```
 
-Set the storefront key printed by `pnpm bagisto:init`:
+Point the frontend at your running Bagisto instance:
 
 ```env
 VITE_BAGISTO_ENDPOINT=http://localhost:8000
 VITE_BAGISTO_STOREFRONT_KEY=pk_storefront_xxxxxxxx
 ```
 
+Generate a storefront API key from the Bagisto admin or API setup if needed.
+
 ---
 
-## 5. Run the apps
+## 4. Run the frontend
 
-**Bagisto (backend):**
-
-```bash
-pnpm --filter @repo/bagisto dev
-```
-
-- Storefront: http://localhost:8000  
-- Admin: http://localhost:8000/admin  
-- GraphQL: http://localhost:8000/graphql  
-
-**TanStack Start (frontend)** — second terminal:
+From the repo root:
 
 ```bash
 pnpm --filter @repo/tanstack-start dev
 ```
 
-**Both together** (after Bagisto is installed):
+Or start all monorepo apps:
 
 ```bash
 pnpm dev
@@ -122,36 +76,10 @@ pnpm dev
 
 ---
 
-## Bagisto maintenance commands
-
-| Command | What it does |
-|---------|----------------|
-| `pnpm bagisto:init` | First-time setup (or safe re-run) |
-| `pnpm bagisto:migrate` | Run pending migrations |
-| `pnpm bagisto:seed` | Run database seeders |
-| `pnpm bagisto:fresh` | Wipe all tables and re-migrate (destructive) |
-| `pnpm --filter @repo/bagisto generate:storefront-key` | Create another API key |
-| `pnpm --filter @repo/bagisto dev` | Start Bagisto on :8000 |
-
-Legacy aliases (still work, but prefer `bagisto:init`):
-
-| Command | What it does |
-|---------|----------------|
-| `pnpm bagisto:bootstrap` | Clone Bagisto source only |
-| `pnpm bagisto:postbootstrap` | Same as `bagisto:init` |
-
----
-
 ## Troubleshooting
-
-**`Connection refused` / `could not find driver` (MySQL)**  
-MySQL is not running, or `DB_*` values in `apps/bagisto/.env` are wrong. Ensure `pdo_mysql` is enabled in `php.ini`.
-
-**Headless API / GraphQL returns 404**  
-Re-run `pnpm bagisto:init` or `pnpm --filter @repo/bagisto install:api`.
 
 **CORS errors from TanStack**  
 Confirm `VITE_BAGISTO_ENDPOINT` matches Bagisto’s URL and the storefront key is set in root `.env`.
 
-**Elasticsearch / Redis warnings**  
-Bagisto may log warnings without them. For local dev, `php artisan serve` is usually enough. For full search features, use Docker Sail: `pnpm --filter @repo/bagisto dev:sail`.
+**Bagisto issues**  
+Use standard Laravel/Bagisto commands inside `apps/bagisto`. The monorepo does not manage Bagisto installs or migrations.
