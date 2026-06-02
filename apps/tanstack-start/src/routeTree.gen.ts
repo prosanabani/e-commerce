@@ -9,86 +9,317 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as UiShowcaseRouteImport } from './routes/ui-showcase'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as PublicRouteRouteImport } from './routes/_public/route'
+import { Route as CheckoutRouteRouteImport } from './routes/_checkout/route'
+import { Route as PublicIndexRouteImport } from './routes/_public/index'
+import { Route as ApiGraphqlRouteImport } from './routes/api/graphql'
+import { Route as PublicSuccessRouteImport } from './routes/_public/success'
+import { Route as PublicPageRouteImport } from './routes/_public/$page'
+import { Route as CheckoutCheckoutRouteImport } from './routes/_checkout/checkout'
+import { Route as PublicSearchIndexRouteImport } from './routes/_public/search/index'
+import { Route as PublicSearchCollectionRouteImport } from './routes/_public/search/$collection'
+import { Route as PublicProductSplatRouteImport } from './routes/_public/product/$'
+import { Route as PublicCustomerRegisterRouteImport } from './routes/_public/customer/register'
+import { Route as PublicCustomerLoginRouteImport } from './routes/_public/customer/login'
+import { Route as PublicCustomerForgetPasswordRouteImport } from './routes/_public/customer/forget-password'
 
-const UiShowcaseRoute = UiShowcaseRouteImport.update({
-  id: '/ui-showcase',
-  path: '/ui-showcase',
+const PublicRouteRoute = PublicRouteRouteImport.update({
+  id: '/_public',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+const CheckoutRouteRoute = CheckoutRouteRouteImport.update({
+  id: '/_checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const ApiGraphqlRoute = ApiGraphqlRouteImport.update({
+  id: '/api/graphql',
+  path: '/api/graphql',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicSuccessRoute = PublicSuccessRouteImport.update({
+  id: '/success',
+  path: '/success',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const PublicPageRoute = PublicPageRouteImport.update({
+  id: '/$page',
+  path: '/$page',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const CheckoutCheckoutRoute = CheckoutCheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => CheckoutRouteRoute,
+} as any)
+const PublicSearchIndexRoute = PublicSearchIndexRouteImport.update({
+  id: '/search/',
+  path: '/search/',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const PublicSearchCollectionRoute = PublicSearchCollectionRouteImport.update({
+  id: '/search/$collection',
+  path: '/search/$collection',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const PublicProductSplatRoute = PublicProductSplatRouteImport.update({
+  id: '/product/$',
+  path: '/product/$',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const PublicCustomerRegisterRoute = PublicCustomerRegisterRouteImport.update({
+  id: '/customer/register',
+  path: '/customer/register',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const PublicCustomerLoginRoute = PublicCustomerLoginRouteImport.update({
+  id: '/customer/login',
+  path: '/customer/login',
+  getParentRoute: () => PublicRouteRoute,
+} as any)
+const PublicCustomerForgetPasswordRoute =
+  PublicCustomerForgetPasswordRouteImport.update({
+    id: '/customer/forget-password',
+    path: '/customer/forget-password',
+    getParentRoute: () => PublicRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/ui-showcase': typeof UiShowcaseRoute
+  '/': typeof PublicIndexRoute
+  '/checkout': typeof CheckoutCheckoutRoute
+  '/$page': typeof PublicPageRoute
+  '/success': typeof PublicSuccessRoute
+  '/api/graphql': typeof ApiGraphqlRoute
+  '/customer/forget-password': typeof PublicCustomerForgetPasswordRoute
+  '/customer/login': typeof PublicCustomerLoginRoute
+  '/customer/register': typeof PublicCustomerRegisterRoute
+  '/product/$': typeof PublicProductSplatRoute
+  '/search/$collection': typeof PublicSearchCollectionRoute
+  '/search/': typeof PublicSearchIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/ui-showcase': typeof UiShowcaseRoute
+  '/': typeof PublicIndexRoute
+  '/checkout': typeof CheckoutCheckoutRoute
+  '/$page': typeof PublicPageRoute
+  '/success': typeof PublicSuccessRoute
+  '/api/graphql': typeof ApiGraphqlRoute
+  '/customer/forget-password': typeof PublicCustomerForgetPasswordRoute
+  '/customer/login': typeof PublicCustomerLoginRoute
+  '/customer/register': typeof PublicCustomerRegisterRoute
+  '/product/$': typeof PublicProductSplatRoute
+  '/search/$collection': typeof PublicSearchCollectionRoute
+  '/search': typeof PublicSearchIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/ui-showcase': typeof UiShowcaseRoute
+  '/_checkout': typeof CheckoutRouteRouteWithChildren
+  '/_public': typeof PublicRouteRouteWithChildren
+  '/_checkout/checkout': typeof CheckoutCheckoutRoute
+  '/_public/$page': typeof PublicPageRoute
+  '/_public/success': typeof PublicSuccessRoute
+  '/api/graphql': typeof ApiGraphqlRoute
+  '/_public/': typeof PublicIndexRoute
+  '/_public/customer/forget-password': typeof PublicCustomerForgetPasswordRoute
+  '/_public/customer/login': typeof PublicCustomerLoginRoute
+  '/_public/customer/register': typeof PublicCustomerRegisterRoute
+  '/_public/product/$': typeof PublicProductSplatRoute
+  '/_public/search/$collection': typeof PublicSearchCollectionRoute
+  '/_public/search/': typeof PublicSearchIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/ui-showcase'
+  fullPaths:
+    | '/'
+    | '/checkout'
+    | '/$page'
+    | '/success'
+    | '/api/graphql'
+    | '/customer/forget-password'
+    | '/customer/login'
+    | '/customer/register'
+    | '/product/$'
+    | '/search/$collection'
+    | '/search/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/ui-showcase'
-  id: '__root__' | '/' | '/about' | '/ui-showcase'
+  to:
+    | '/'
+    | '/checkout'
+    | '/$page'
+    | '/success'
+    | '/api/graphql'
+    | '/customer/forget-password'
+    | '/customer/login'
+    | '/customer/register'
+    | '/product/$'
+    | '/search/$collection'
+    | '/search'
+  id:
+    | '__root__'
+    | '/_checkout'
+    | '/_public'
+    | '/_checkout/checkout'
+    | '/_public/$page'
+    | '/_public/success'
+    | '/api/graphql'
+    | '/_public/'
+    | '/_public/customer/forget-password'
+    | '/_public/customer/login'
+    | '/_public/customer/register'
+    | '/_public/product/$'
+    | '/_public/search/$collection'
+    | '/_public/search/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
-  UiShowcaseRoute: typeof UiShowcaseRoute
+  CheckoutRouteRoute: typeof CheckoutRouteRouteWithChildren
+  PublicRouteRoute: typeof PublicRouteRouteWithChildren
+  ApiGraphqlRoute: typeof ApiGraphqlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/ui-showcase': {
-      id: '/ui-showcase'
-      path: '/ui-showcase'
-      fullPath: '/ui-showcase'
-      preLoaderRoute: typeof UiShowcaseRouteImport
+    '/_public': {
+      id: '/_public'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PublicRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/_checkout': {
+      id: '/_checkout'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof CheckoutRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_public/': {
+      id: '/_public/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof PublicIndexRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/api/graphql': {
+      id: '/api/graphql'
+      path: '/api/graphql'
+      fullPath: '/api/graphql'
+      preLoaderRoute: typeof ApiGraphqlRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_public/success': {
+      id: '/_public/success'
+      path: '/success'
+      fullPath: '/success'
+      preLoaderRoute: typeof PublicSuccessRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_public/$page': {
+      id: '/_public/$page'
+      path: '/$page'
+      fullPath: '/$page'
+      preLoaderRoute: typeof PublicPageRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_checkout/checkout': {
+      id: '/_checkout/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutCheckoutRouteImport
+      parentRoute: typeof CheckoutRouteRoute
+    }
+    '/_public/search/': {
+      id: '/_public/search/'
+      path: '/search'
+      fullPath: '/search/'
+      preLoaderRoute: typeof PublicSearchIndexRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_public/search/$collection': {
+      id: '/_public/search/$collection'
+      path: '/search/$collection'
+      fullPath: '/search/$collection'
+      preLoaderRoute: typeof PublicSearchCollectionRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_public/product/$': {
+      id: '/_public/product/$'
+      path: '/product/$'
+      fullPath: '/product/$'
+      preLoaderRoute: typeof PublicProductSplatRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_public/customer/register': {
+      id: '/_public/customer/register'
+      path: '/customer/register'
+      fullPath: '/customer/register'
+      preLoaderRoute: typeof PublicCustomerRegisterRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_public/customer/login': {
+      id: '/_public/customer/login'
+      path: '/customer/login'
+      fullPath: '/customer/login'
+      preLoaderRoute: typeof PublicCustomerLoginRouteImport
+      parentRoute: typeof PublicRouteRoute
+    }
+    '/_public/customer/forget-password': {
+      id: '/_public/customer/forget-password'
+      path: '/customer/forget-password'
+      fullPath: '/customer/forget-password'
+      preLoaderRoute: typeof PublicCustomerForgetPasswordRouteImport
+      parentRoute: typeof PublicRouteRoute
     }
   }
 }
 
+interface CheckoutRouteRouteChildren {
+  CheckoutCheckoutRoute: typeof CheckoutCheckoutRoute
+}
+
+const CheckoutRouteRouteChildren: CheckoutRouteRouteChildren = {
+  CheckoutCheckoutRoute: CheckoutCheckoutRoute,
+}
+
+const CheckoutRouteRouteWithChildren = CheckoutRouteRoute._addFileChildren(
+  CheckoutRouteRouteChildren,
+)
+
+interface PublicRouteRouteChildren {
+  PublicPageRoute: typeof PublicPageRoute
+  PublicSuccessRoute: typeof PublicSuccessRoute
+  PublicIndexRoute: typeof PublicIndexRoute
+  PublicCustomerForgetPasswordRoute: typeof PublicCustomerForgetPasswordRoute
+  PublicCustomerLoginRoute: typeof PublicCustomerLoginRoute
+  PublicCustomerRegisterRoute: typeof PublicCustomerRegisterRoute
+  PublicProductSplatRoute: typeof PublicProductSplatRoute
+  PublicSearchCollectionRoute: typeof PublicSearchCollectionRoute
+  PublicSearchIndexRoute: typeof PublicSearchIndexRoute
+}
+
+const PublicRouteRouteChildren: PublicRouteRouteChildren = {
+  PublicPageRoute: PublicPageRoute,
+  PublicSuccessRoute: PublicSuccessRoute,
+  PublicIndexRoute: PublicIndexRoute,
+  PublicCustomerForgetPasswordRoute: PublicCustomerForgetPasswordRoute,
+  PublicCustomerLoginRoute: PublicCustomerLoginRoute,
+  PublicCustomerRegisterRoute: PublicCustomerRegisterRoute,
+  PublicProductSplatRoute: PublicProductSplatRoute,
+  PublicSearchCollectionRoute: PublicSearchCollectionRoute,
+  PublicSearchIndexRoute: PublicSearchIndexRoute,
+}
+
+const PublicRouteRouteWithChildren = PublicRouteRoute._addFileChildren(
+  PublicRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  UiShowcaseRoute: UiShowcaseRoute,
+  CheckoutRouteRoute: CheckoutRouteRouteWithChildren,
+  PublicRouteRoute: PublicRouteRouteWithChildren,
+  ApiGraphqlRoute: ApiGraphqlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

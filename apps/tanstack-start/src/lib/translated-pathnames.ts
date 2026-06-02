@@ -3,8 +3,6 @@ import type { Locale } from "~/paraglide/runtime";
 
 type RoutePath = keyof FileRoutesByTo;
 
-// Routes that should NOT be localized
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const excludedPaths = ["api"] as const;
 
 type PublicRoutePath = Exclude<
@@ -18,17 +16,11 @@ interface TranslatedPathname {
 }
 
 function toUrlPattern(path: string) {
-  return (
-    path
-      // catch-all
-      .replace(/\/\$$/, "/:path(.*)?")
-      // optional parameters: {-$param}
-      .replace(/\{-\$([a-zA-Z0-9_]+)\}/g, ":$1?")
-      // named parameters: $param
-      .replace(/\$([a-zA-Z0-9_]+)/g, ":$1")
-      // remove trailing slash
-      .replace(/\/+$/, "")
-  );
+  return path
+    .replace(/\/\$$/, "/:path(.*)?")
+    .replace(/\{-\$([a-zA-Z0-9_]+)\}/g, ":$1?")
+    .replace(/\$([a-zA-Z0-9_]+)/g, ":$1")
+    .replace(/\/+$/, "");
 }
 
 function createTranslatedPathnames(
@@ -53,12 +45,12 @@ export const translatedPathnames = createTranslatedPathnames({
     en: "/",
     ar: "/",
   },
-  "/about": {
-    en: "/about",
-    ar: "/about-us",
+  "/search": {
+    en: "/search",
+    ar: "/search",
   },
-  "/ui-showcase": {
-    en: "/ui-showcase",
-    ar: "/ui-showcase",
+  "/checkout": {
+    en: "/checkout",
+    ar: "/checkout",
   },
 });
