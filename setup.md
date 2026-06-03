@@ -78,6 +78,16 @@ pnpm dev
 
 ## Troubleshooting
 
+**`attribute_translations` doesn't exist / artisan fails on empty database**
+
+Bagisto’s API Platform package inspects models at boot and can query the database before migrations run. If `DB_DATABASE` points at an empty database, set this in `apps/bagisto/.env` before install:
+
+```env
+BAGISTO_SKIP_API_PLATFORM=true
+```
+
+Then run `php artisan bagisto:install` (or `migrate` + `db:seed`). Set it back to `false` when finished.
+
 **CORS errors from TanStack**  
 Confirm `VITE_BAGISTO_ENDPOINT` matches Bagisto’s URL and the storefront key is set in root `.env`.
 

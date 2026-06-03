@@ -11,6 +11,16 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance;
 use Webkul\Core\Http\Middleware\SecureHeaders;
 use Webkul\Installer\Http\Middleware\CanInstall;
 
+$skipApiPlatform = (static function (): bool {
+    $envFile = dirname(__DIR__).'/.env';
+
+    if (! is_readable($envFile)) {
+        return false;
+    }
+
+    return (bool) preg_match('/^\s*BAGISTO_SKIP_API_PLATFORM\s*=\s*true\s*$/mi', (string) file_get_contents($envFile));
+})();
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -53,9 +63,14 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })
-->withProviders([
-     \ApiPlatform\Laravel\ApiPlatformProvider::class,
-     \ApiPlatform\Laravel\ApiPlatformDeferredProvider::class,
-     \ApiPlatform\Laravel\Eloquent\ApiPlatformEventProvider::class,
-])
+->withProviders(array_values(array_filter([
+    /**
+     * API Platform introspects Eloquent models (including translatable relations) during
+     * boot. On an empty database that breaks artisan migrate / bagisto:install.
+     * Set BAGISTO_SKIP_API_PLATFORM=true in .env until the schema exists.
+     */
+    $skipApiPlatform ? null : \ApiPlatform\Laravel\ApiPlatformProvider::class,
+    $skipApiPlatform ? null : \ApiPlatform\Laravel\ApiPlatformDeferredProvider::class,
+    $skipApiPlatform ? null : \ApiPlatform\Laravel\Eloquent\ApiPlatformEventProvider::class,
+])))
 ->create();
